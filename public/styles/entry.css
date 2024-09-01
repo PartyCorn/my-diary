@@ -1,0 +1,137 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    max-width: 732px;
+    margin: 0 auto;
+    position: relative;
+    padding: 21px 0;
+    width: 100%;
+    flex-grow: 1;
+}
+h1 {
+    font-size: 32px;
+    margin: 21px 0 12px;
+    line-height: 34px;
+}
+.label::after {
+    content: attr(data-label);
+    position: absolute;
+    color: #737473;
+    border-right: 1px solid rgba(115, 116, 115, .15);
+    right: 100%;
+    padding: 0 12px;
+    font-weight: 400;
+    margin: 0 21px;
+}
+article {
+    word-wrap: break-word;
+}
+address {
+    color: rgb(153, 144, 131);
+    font-style: normal;
+}
+.tags {
+    margin: 12px 0 21px;
+}
+.tags, .tags-container {
+    display: flex;
+    gap: 10px;
+}
+#tag-input {
+    border-radius: 16px;
+    width: 100%;
+    padding: 0 10px;
+    display: none;
+}
+#editor-space {
+    display: none;
+    gap: 50px;
+    justify-content: space-between;
+}
+#editor, #preview {
+    width: 300px;
+    min-width: 50%;
+    min-height: 480px;
+    word-break: break-all;
+}
+.tag {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: rgba(115, 116, 115, .4);
+    border-radius: 16px;
+    padding: 2px 7px;
+}
+#add-tag {
+    display: none;
+    cursor: pointer;
+}
+.circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.close {
+    margin-left: 5px;
+    cursor: pointer;
+    transition-duration: .2s;
+    display: none;
+}
+
+.close:hover {
+    color: rgb(225, 101, 101);
+}
+button {
+    color: rgb(232, 230, 227);
+    border: 2px solid #7b7265;
+    background-color: rgb(24, 26, 27);
+    font-weight: 600;
+    font-style: normal;
+    font-size: 17px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    margin: 0 0 15px;
+    cursor: pointer;
+    transition-duration: .2s;
+    display: block;
+}
+button:hover {
+    background-color: #3a3a3a;
+}
+.btn-danger {
+    color: rgb(225, 101, 101);
+    border: 2px solid #853636;
+}
+.btn-danger:hover {
+    background-color: #411c1c;
+}
+.btn-success {
+    color: rgb(101, 225, 124);
+    border: 2px solid #3b8536;
+}
+.btn-success:hover {
+    background-color: #1c411e;
+}
+#btn-edit[data-isEntryExists="false"] {
+    color: #13cbe7;
+    border: 2px solid #0c879a;
+}
+#btn-edit[data-isEntryExists="false"]:hover {
+    background-color: #06434d;
+}
+aside {
+    position: fixed;
+    left: 50%;
+    top: 70px;
+    right: 0;
+    margin: 46px 0 0 376px;
+}
+[contenteditable]:focus {
+    outline: 0px solid transparent;
+}

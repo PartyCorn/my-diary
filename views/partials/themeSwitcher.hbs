@@ -1,0 +1,21 @@
+<div class="theme-picker">
+    <h2>{{ __ "theme" }}</h2>
+    <div class="theme-buttons">
+        <button data-index="0" data-color="#f0f0f0" data-bg-color="#222"></button>
+        <button data-index="1" data-color="#222" data-bg-color="#f0f0f0"></button>
+        <button data-index="2" data-color="#fff" data-bg-color="#000">C</button>
+    </div>
+    <h2>{{ __ "design" }}</h2>
+    <div class="theme-color-buttons">
+        <button data-color="#52c8e5" data-bg-color="#368598"></button>
+        <button data-color="#8a5bdc" data-bg-color="#5a3b8f"></button>
+        <button data-color="#ff6ac6" data-bg-color="#b24a8a"></button>
+        <button data-color="#e55268" data-bg-color="#983645"></button>
+        <button data-color="#e57c52" data-bg-color="#985236"></button>
+        <button data-color="#efd648" data-bg-color="#a29130"></button>
+        <button data-color="#7cdb5c" data-bg-color="#508e3b"></button>
+        <p>or set a custom one: </p>
+        <input type="color" name="color" id="custom-color-picker" value="{{user.color}}">
+        <input type="color" name="bg-color" id="custom-bg-color-picker" value="{{user.bg_color}}">
+    </div>
+</div>

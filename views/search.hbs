@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<body>
+    {{#each data}}
+        <h1>{{formatTimestamp this.date user.lang}}</h1>
+        {{#if this.editDate}}<address>{{formatTimestamp this.editDate user.lang}}</address>{{/if}}
+        {{#if this.tags}}<p>{{this.tags}}</p>{{/if}}
+        <p>{{this.content}}</p>
+    {{/each}}
+</body>
+</html>

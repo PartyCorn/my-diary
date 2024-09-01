@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{formatTimestamp data.date user.lang}}</title>
+    <script src="/scripts/general.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="/scripts/entry.js" defer></script>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/entry.css">
+</head>
+<body>
+    {{> header}}
+    <div class="wrap">
+        <div class="content">
+            <main>
+                <article>
+                    <h1 class="label" data-label="{{ __ "date" }}" data-date="{{data.date}}">{{formatTimestamp data.date user.lang}}{{#if isToday}}, {{ __ "today" }}{{/if}}</h1>
+                    {{#if data.editDate}}<address class="label" data-label="{{ __ "edited" }}">{{formatTimestamp data.editDate user.lang}}</address>{{/if}}
+                    <div class="label tags" data-label="{{ __ "hashtags" }}">
+                        <input type="text" id="tag-input" placeholder="{{ __ "list_hashtags_placeholder" }}" />
+                        <div class="tags-container">
+                            {{#each data.tags}}
+                                <div class="tag">#{{this}}</div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <p id="content" style="white-space: pre-wrap;">{{#if data.isExists}}{{{data.content}}}{{else}}<span style="color: #999;">{{ __ "new_day_placeholder" }}</span>{{/if}}</p>
+                    <div id="editor-space">
+                        <div>
+                            <h2>{{ __ "editor" }}</h2>
+                            <textarea id="editor" placeholder="{{ __ "start_typing_here_placeholder" }}"></textarea>
+                        </div>
+                        <div>
+                            <h2>{{ __ "preview" }}</h2>
+                            <div id="preview"></div>
+                        </div>
+                    </div>
+                </article>
+                <aside>
+                    <button id="btn-edit" data-state="edit" data-isEntryExists="{{data.isExists}}" data-cancelText="{{ __ "cancel" }}">{{#if data.isExists}}{{ __ "edit" }}{{else}}{{ __ "begin_story" }}{{/if}}</button>
+                    <button id="btn-save" class="btn-success" style="display: none;" data-entryId="{{data.id}}">{{ __ "save" }}</button>
+                    {{#if data.isExists}}<button id="btn-delete" class="btn-danger" data-entryId="{{data.id}}" onclick="showConfirmationModal('{{ __ "confirm_delete_entry" }}', deleteEntry, [{{entryId}}])">{{ __ "delete" }}</button>{{/if}}
+                </aside>
+            </main>
+        </div>
+    </div>
+    {{> footer}}
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p></p>
+            <div>
+                <button id="confirmBtn" class="btn-danger">{{ __ "yes" }}</button>
+                <button id="cancelBtn">{{ __ "cancel" }}</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

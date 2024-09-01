@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ __ "calendar" }}</title>
+    <script src="/scripts/calendar.js" defer></script>
+    <script src="/scripts/general.js" defer></script>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/calendar.css">
+    {{#if user.beta}}<link rel="stylesheet" href="/styles/beta.css">{{/if}}
+</head>
+<body>
+    {{> header}}
+    <main>
+        <div class="year-navigation">
+            <div class="line"></div>
+            <h1 id="yearDisplay">2024</h1>
+            <div class="line"></div>
+            <div>
+                <button id="prevYear">&lt;</button>
+                <button id="nextYear">&gt;</button>
+            </div>
+        </div>
+        <div id="calendar"></div>
+        <button id="todayButton">{{ __ "today" }}</button>
+    </main>
+    {{> footer}}
+    <script>
+        const months = {{{json (__ "months")}}};
+        const weekdays = {{{json (__ "weekdays")}}};
+        const existingDates = {{{json existingDates}}};
+    </script>
+</body>
+</html>

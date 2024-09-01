@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="658406563406-9ep52280uvoql90jjgl38gmquejk2qjl.apps.googleusercontent.com">
+    <title>Login</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="/styles/general.css">
+</head>
+<body>
+    {{> header}}
+    <main>
+        <form action="/login" method="post">
+            <h1>Login</h1>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            
+            <button type="submit">Login</button>
+            <p>Or <a href="/register">register here</a>.</p>
+
+            <div>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            </div>
+        </form>
+    </main>
+    {{> footer}}
+</body>
+</html>

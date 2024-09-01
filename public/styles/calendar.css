@@ -1,0 +1,192 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main {
+    margin-top: 20px;
+}
+
+.year-navigation {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.year-navigation div {
+    margin-right: 20px;
+}
+
+.line {
+    flex: 1;
+    height: 2px;
+    background-color: #c9c9c9;
+    margin: 0 20px;
+}
+
+.line:nth-child(1) {
+    max-width: 100px;
+}
+
+#yearDisplay {
+    font-size: 24px;
+    position: relative;
+}
+
+#prevYear, #nextYear {
+    font-size: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#todayButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.month {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.month h2 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.weekdays, .days {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.weekdays div, .days div {
+    width: 13.7%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0;
+    border: 1px solid #ddd;
+}
+
+.weekdays div {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
+.days div.past-day {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.days div.future-day {
+    background-color: #ccc;
+    pointer-events: none;
+}
+
+.days div.current-day {
+    background-color: #fff;
+    outline: 2px solid #000;
+    cursor: pointer;
+}
+.days div.existing-day {
+    background-color: var(--color);
+}
+
+@media (max-width: 1100px) {
+    .year-navigation {
+        display: flex;
+    }
+    #todayButton {
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 20px;
+        position: fixed;
+        bottom: 20px;
+        left: 10px;
+        display: block;
+    }
+
+    main {
+        width: 100%;
+    }
+
+    #calendar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 5px #ddd;
+        overflow-y: auto;
+        scrollbar-color: #08b0ca #e4e4e4;
+        scrollbar-width: thin;
+    }
+
+    .month {
+        margin-bottom: 20px;
+    }
+
+    .month h2 {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .weekdays, .days {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 320px;
+    }
+
+    .weekdays div, .days div {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px;
+        border-radius: 20px;
+    }
+
+    .weekdays div {
+        font-weight: bold;
+        background-color: #f0f0f0;
+    }
+
+    .days div.past-day {
+        background-color: #ffffff;
+        cursor: pointer;
+        border: 1px solid #ddd;
+    }
+
+    .days div.future-day {
+        background-color: #cccccc;
+        pointer-events: none;
+        border: 1px solid #ddd;
+    }
+
+    .days div.current-day {
+        background-color: #ffffff;
+        outline: 2px solid #000;
+        cursor: pointer;
+    }
+}

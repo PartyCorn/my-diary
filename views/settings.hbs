@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+</head>
+<body>
+    <h1>{{ __ "settings" }}</h1>
+    {{> themeSwitcher}}
+    <hr>
+    <h2>{{ __ "lang" }}</h2>
+    <div class="language-buttons">
+        <button class="lang-btn" data-lang="en">
+            <span class="flag flag-en"></span> English
+        </button>
+        <button class="lang-btn" data-lang="ru">
+            <span class="flag flag-ru"></span> Русский
+        </button>
+        <button class="lang-btn" data-lang="fr">
+            <span class="flag flag-fr"></span> Français
+        </button>
+        <button class="lang-btn" data-lang="de">
+            <span class="flag flag-de"></span> Deutsch
+        </button>
+        <button class="lang-btn" data-lang="it">
+            <span class="flag flag-it"></span> Italiano
+        </button>
+        <button class="lang-btn" data-lang="es">
+            <span class="flag flag-es"></span> Español
+        </button>
+        <button class="lang-btn" data-lang="pl">
+            <span class="flag flag-pl"></span> Polski
+        </button>
+        <button class="lang-btn" data-lang="jpn">
+            <span class="flag flag-jp"></span> 日本語
+        </button>
+    </div>
+    <hr>
+    <h2>Start Date</h2>
+    <input type="date" name="start-date" id="start-date" value="{{user.start_date}}">
+    <hr>
+    <label for="beta-btn">{{ __ "enable_beta" }}</label>
+    <div class="switch">
+        <input type="checkbox" name="beta" id="beta-btn" {{#if user.beta}}checked{{/if}}>
+        <span class="slider"></span>
+    </div>
+</body>
+
+</html>
