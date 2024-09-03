@@ -11,12 +11,6 @@ const dropdown = document.createElement('div');
 dropdown.classList.add('dropdown');
 document.body.appendChild(dropdown);
 
-function renderHTML() {
-    const html = md.render(editor.value);
-    preview.innerHTML = html;
-}
-editor.addEventListener('input', renderHTML);
-
 editButton.addEventListener('click', function() {
     const currentState = editButton.getAttribute('data-state');
 
@@ -29,7 +23,6 @@ editButton.addEventListener('click', function() {
 
             content.style.display = 'none';
             editor.style.display = 'block';
-            renderHTML();
             reformatTagsView(true);
             break;
         case 'cancel':
