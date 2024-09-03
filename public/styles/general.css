@@ -183,28 +183,6 @@ header {
     background-color: #f0f0f0;
 }
 
-.theme-picker {
-    padding: 20px;
-}
-.theme-picker h2 {
-    margin: 5px 10px;
-}
-.theme-picker div {
-    display: flex;
-    gap: 3px;
-    flex-wrap: wrap;
-}
-.theme-picker button {
-    width: 40px;
-    height: 40px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition-duration: .2s;
-}
-.theme-picker button:hover {
-    filter: brightness(120%);
-}
-
 /* Мобильный стиль хедера */
 @media (max-width: 768px) {
     .logo span {
@@ -212,10 +190,6 @@ header {
     }
 
     .theme-switch {
-        display: none;
-    }
-
-    .header-right span {
         display: none;
     }
 }
@@ -257,14 +231,14 @@ footer {
     padding-top: 10px;
 }
 
-.footer-section a {
+a {
     color: var(--color);
     text-decoration: none;
     display: block;
     margin-bottom: 5px;
 }
 
-.footer-section a:hover {
+a:hover {
     text-decoration: underline;
 }
 
@@ -343,6 +317,28 @@ footer {
 /* SETTINGS */
 #settings {
     width: 33vw;
+}
+/* Кнопки оформления */
+.theme-picker {
+    padding: 20px;
+}
+.theme-picker h2 {
+    margin: 5px 10px;
+}
+.theme-picker div {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.theme-picker button, input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition-duration: .2s;
+}
+.theme-picker button:hover, input[type="color"]:hover {
+    filter: brightness(120%);
 }
 /* Языковые кнопки */
 .language-buttons {
@@ -447,4 +443,28 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px);
+}
+
+/* SEARCH */
+.entry {
+    cursor: pointer;
+}
+.entry:hover {
+    background-color: #ccc;
+}
+.tag {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: rgba(115, 116, 115, .4);
+    border-radius: 16px;
+    padding: 2px 7px;
+}
+.tags-container {
+    display: flex;
+    gap: 10px;
+}
+address {
+    color: rgb(153, 144, 131);
+    font-style: normal;
 }

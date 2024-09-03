@@ -1,4 +1,3 @@
-const md = window.markdownit();
 const editButton = document.getElementById('btn-edit');
 const saveButton = document.getElementById('btn-save');
 const deleteButton = document.getElementById('btn-delete');
@@ -7,7 +6,6 @@ const tagInput = document.getElementById('tag-input');
 const tagContainer = document.querySelector('.tags-container');
 const editorSpace = document.getElementById('editor-space');
 const editor = document.getElementById('editor');
-const preview = document.getElementById('preview');
 
 const dropdown = document.createElement('div');
 dropdown.classList.add('dropdown');
@@ -18,9 +16,6 @@ function renderHTML() {
     preview.innerHTML = html;
 }
 editor.addEventListener('input', renderHTML);
-const originalContent = saveButton.getAttribute('data-entryId') ? content.innerHTML : '';
-content.innerHTML = md.render(content.innerText);
-content.style.whiteSpace = 'wrap';
 
 editButton.addEventListener('click', function() {
     const currentState = editButton.getAttribute('data-state');
@@ -32,9 +27,8 @@ editButton.addEventListener('click', function() {
             editButton.textContent = editButton.getAttribute('data-cancelText');
             editButton.setAttribute('data-state', 'cancel');
 
-            editor.value = originalContent;
             content.style.display = 'none';
-            editorSpace.style.display = 'flex';
+            editor.style.display = 'block';
             renderHTML();
             reformatTagsView(true);
             break;
@@ -46,12 +40,11 @@ editButton.addEventListener('click', function() {
 
 saveButton.addEventListener('click', function() {
     const entryId = saveButton.getAttribute('data-entryId');
-    const content = document.querySelector('#content');
     const tags = getInlineTags();
 
     const data = {
-        date: document.querySelector('article h1').getAttribute('data-date'),
-        content: editor.value,
+        date: document.querySelector('article h1').dataset.date,
+        content: tinyMDE.getContent(),
         tags: tags
     };
 
@@ -73,8 +66,6 @@ saveButton.addEventListener('click', function() {
     .catch((error) => {
         console.error('Error:', error);
     });
-
-    content.contentEditable = false;
 
     saveButton.style.display = 'none';
     editButton.textContent = 'Edit';

@@ -7,10 +7,19 @@
 </head>
 <body>
     {{#each data}}
-        <h1>{{formatTimestamp this.date user.lang}}</h1>
-        {{#if this.editDate}}<address>{{formatTimestamp this.editDate user.lang}}</address>{{/if}}
-        {{#if this.tags}}<p>{{this.tags}}</p>{{/if}}
-        <p>{{this.content}}</p>
+        <div class="entry" data-href="{{this.date}}">
+            <h1>{{formatTimestamp this.date ../user.lang}}</h1>
+            {{#if this.editDate}}<address>{{formatTimestamp this.editDate ../user.lang}}</address>{{/if}}
+            {{#if this.tags}}
+                <div class="tags-container">
+                    {{#each this.tags}}
+                        <div class="tag">#{{this}}</div>
+                    {{/each}}
+                </div>
+                <p>{{this.content}}</p>
+            {{/if}}
+        </div>
+        <hr>
     {{/each}}
 </body>
 </html>

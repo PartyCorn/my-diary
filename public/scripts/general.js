@@ -140,6 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(html => {
                 searchDropdown.innerHTML = html; // Вставляем полученную HTML-страницу внутрь dropdown
                 toggleDropdown(searchDropdown, true); // Показываем dropdown с результатами
+                document.querySelectorAll('.entry').forEach(result => {
+                    result.addEventListener('click', () => {
+                        window.location.href = 'entries/' + result.dataset.href.replaceAll('-', '/');
+                    });
+                });
             })
             .catch(error => {
                 console.error('Ошибка при выполнении поиска:', error);

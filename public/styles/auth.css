@@ -1,0 +1,54 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+main.bg-img-1 {
+    background: url('/static/authBG.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 25%;
+}
+main.bg-img-2 {
+    background: url('/static/authBG2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+form {
+    background-color: azure;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--color);
+}
+
+form input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #a8a8a8;
+    transition-duration: .2s;
+    width: 100%;
+}
+form input:focus {
+    outline: none;
+    border-bottom: 1px solid #cacaca;
+}
+
+form button[type="submit"] {
+    border-radius: 50px;
+    border: 1px solid #a8a8a8;
+    width: 100%;
+    height: 25px;
+    text-align: center;
+}
+
+form a {
+    display: inline-block;
+}

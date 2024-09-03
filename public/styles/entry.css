@@ -2,6 +2,13 @@
     display: flex;
     flex-direction: column;
 }
+main {
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+main::-webkit-scrollbar {
+    display: none;
+}
 .content {
     max-width: 732px;
     margin: 0 auto;
@@ -45,16 +52,8 @@ address {
     padding: 0 10px;
     display: none;
 }
-#editor-space {
+#editor {
     display: none;
-    gap: 50px;
-    justify-content: space-between;
-}
-#editor, #preview {
-    width: 300px;
-    min-width: 50%;
-    min-height: 480px;
-    word-break: break-all;
 }
 .tag {
     position: relative;
@@ -134,4 +133,27 @@ aside {
 }
 [contenteditable]:focus {
     outline: 0px solid transparent;
+}
+.spot {
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: .5;
+}
+#spot1 {
+    left: 10%;
+    bottom: 10%;
+    box-shadow: 0 0 300px var(--bg-color);
+    background: var(--bg-color);
+    width: 300px;
+    height: 300px;
+}
+#spot2 {
+    right: 5%;
+    bottom: 50%;
+    box-shadow: 0 0 500px var(--color);
+    background: var(--color);
+    width: 500px;
+    height: 500px;
 }

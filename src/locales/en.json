@@ -31,5 +31,16 @@
     "editor": "Editor",
     "preview": "Preview",
     "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "weekdays": ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    "weekdays": ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+    "lang": "Language",
+    "enable_beta": "Enable Beta?",
+    "register": "Register",
+    "login_here": "Login here",
+    "already_have_account": "Already have an account?",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "register_here": "Register here",
+    "first_time_here": "First time here?",
+    "start_date": "Calendar Start Date"
 }  

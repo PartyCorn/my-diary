@@ -114,11 +114,19 @@ exports.searchEntries = (req, res) => {
             params.push(`%${tag}%`);
         });
     }
+    sql += ' LIMIT 10';
 
     db.all(sql, params, (err, rows) => {
         if (err) {
             return res.status(500).send('Ошибка при поиске записей');
         }
+
+        rows.forEach(row => {
+            row.tags = row.tags ? row.tags.split(',') : [];
+            if (row.content.length > 100) {
+                row.content = row.content.substring(0, 100) + '...';
+            }
+        });
 
         res.render('search', { data: rows, user: req.user });
     });
