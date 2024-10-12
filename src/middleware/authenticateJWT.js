@@ -17,11 +17,13 @@ const authenticateJWT = (req, res, next) => {
                 if (err || !dbUser) {
                     return res.redirect('/login');
                 }
+                user.theme = dbUser.theme;
                 user.color = dbUser.color;
                 user.bg_color = dbUser.bg_color;
                 user.lang = dbUser.lang;
                 user.beta = dbUser.beta;
-                user.start_date = dbUser.start_date;
+                user.cal_months = dbUser.cal_months;
+                user.rec_ent = dbUser.rec_ent;
                 i18n.setLocale(req, user.lang);
                 req.user = user;
                 next();

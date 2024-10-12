@@ -3,19 +3,21 @@ const bcrypt = require('bcryptjs');
 
 const db = new sqlite3.Database('mydiary.db');
 
-db.run('PRAGMA foreign_keys = ON');
 db.serialize(() => {
+    db.run('PRAGMA foreign_keys = ON');
+
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             email TEXT UNIQUE,
             password TEXT,
-            theme INTEGER DEFAULT 0,
+            theme INTEGER DEFAULT 2,
             color TEXT DEFAULT '#52c8e5',
             bg_color TEXT DEFAULT '#368598',
             lang TEXT DEFAULT 'en',
             beta BOOLEAN DEFAULT 0,
-            start_date DATE DEFAULT (date('now', 'start of year'))
+            cal_months INTEGER DEFAULT 6,
+            rec_ent INTEGER DEFAULT 6
         )
     `);
     
@@ -23,7 +25,7 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS entries (
             id INTEGER PRIMARY KEY,
             date TEXT,
-            editDate INTEGER,
+            editDate TIMESTAMP,
             content TEXT,
             tags TEXT, -- Store tags as a comma-separated list
             user_id INTEGER, -- Внешний ключ для связи с пользователем

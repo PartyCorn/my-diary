@@ -1,13 +1,14 @@
 {
   "name": "diary",
-  "version": "2.3.4",
+  "version": "3.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "PartyCorn",
+  "author": "PartyCorn (Andrew Kurilov)",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

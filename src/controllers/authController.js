@@ -10,11 +10,10 @@ exports.registerPage = (req, res) => {
 exports.register = (req, res) => {
     const { email, password } = req.body;
     const hashedPassword = hashPassword(password);
-    db.run('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err) => {
+    db.run('INSERT INTO users (email, password, lang) VALUES (?, ?, ?)', [email, hashedPassword, req.lang], (err) => {
         if (err) {
             res.status(500).send('Error registering new user');
         } else {
-            // res.status(200).send('User registered successfully');
             res.redirect('/login');
         }
     });
@@ -39,7 +38,6 @@ exports.login = (req, res) => {
 
             // Сохранение токена в куки
             res.cookie('token', token, { httpOnly: true, secure: config.NODE_ENV === 'production' });
-            // res.status(200).send('Login successful');
             res.redirect('/home');
         } else {
             res.status(401).send('Invalid credentials');

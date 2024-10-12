@@ -1,48 +1,114 @@
-<header id="general-header">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&family=Roboto:wght@900&display=swap" rel="stylesheet">
-    <style>body { margin-top: 70px; }</style>
-
-    <div class="header-container">
-        <div class="logo" onclick="location.href='{{#if user}}/home{{else}}/{{/if}}'">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf3] px-10 py-3 noselect
+z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-slate-900/10 dark:border-slate-50/[0.06] bg-white/95 supports-backdrop-blur:bg-white/60 dark:bg-transparent">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>main { margin-top: 70px; }</style>
+    <div class="flex items-center gap-4 text-[#0e141b] cursor-pointer" onclick="location.href='{{#if user}}/home{{else}}/{{/if}}'">
+        <div class="size-8">
             <img src="/static/logo.png" alt="Logo">
-            <span>My Diary</span>
         </div>
-        {{#if user}}
-            <div class="search-container">
-                <input type="text" placeholder="Поиск..." id="search-input">
-                <div class="search-dropdown" id="search-dropdown">
-                    <!-- Здесь могут быть элементы выпадающего меню поиска -->
+        <h2 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em]">My Diary</h2>
+    </div>
+    {{#if user}}
+    <div class="flex flex-1 justify-end gap-8">
+        <div class="flex items-center gap-9">
+            <a id="todayButton" class="text-[#0e141b] text-sm font-medium leading-normal" href="#">{{ __ "today" }}</a>
+            {{#if user.beta}}<a class="text-[#0e141b] text-sm font-medium leading-normal" href="#">{{ __ "statistics" }}</a>{{/if}}
+            <script>
+                const today = new Date();
+                const todayButton = document.getElementById("todayButton");
+                todayButton.href = `/entries/${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+            </script>
+        </div>
+        <div class="flex gap-2">
+            <button id="searchLink" class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#e7edf3] text-[#0e141b] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+                <div class="text-[#0e141b]" data-icon="MagnifyingGlass" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                    d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                    ></path>
+                </svg>
+                </div>
+            </button>
+            {{#if user.beta}}
+                <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#e7edf3] text-[#0e141b] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+                    <div class="text-[#0e141b]" data-icon="Bell" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                        <path
+                        d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                        ></path>
+                    </svg>
+                    </div>
+                </button>
+            {{/if}}
+            <button title="{{ __ "settings" }}" id="settingsLink" class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#e7edf3] text-[#0e141b] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+                <div class="text-[#0e141b]" data-icon="SettingsGear" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </div>
+            </button>
+        </div>
+        <button title="{{ __ "logout" }}" onclick="showConfirmationModal('{{ __ "logout" }}', '{{ __ "confirm_logout" }}', logout)" class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#ffe0e4] text-[#0e141b] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+            <div class="text-[#0e141b]" data-icon="Logout" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                </svg>
+            </div>
+        </button>
+    </div>
+    {{else}}
+        <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+                <a class="text-[#0e141b] text-sm font-medium leading-normal cursor-pointer" onclick="window.location.href == '/' ? document.getElementById('learn_more').scrollIntoView({ behavior: 'smooth' }) : window.location.href = '/#learn_more'">{{ __ "features" }}</a>
+            </div>
+            <div class="flex gap-2">
+                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#1980e6] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]" onclick="window.location.href = '/login'">
+                    <span class="truncate">{{ __ "login" }}</span>
+                </button>
+            </div>
+        </div>
+    {{/if}}
+</header>
+{{#if user}}
+    <div id="settings" class="modal hidden"></div>
+    <div id="search" class="modal hidden">
+        <form class="max-w-md mx-auto">   
+            <label for="search-input" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">{{ __ "search" }}</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input type="search" id="search-input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="{{ __ "search_placeholder" }}" />
+                <button type="submit" id="search-btn" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="background-color: var(--bg-color);">{{ __ "search" }}</button>
+            </div>
+            <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">{{ __ "filter_by_hashtags" }}</h2>
+            <div class="tags-container overflow-y-scroll h-30"></div>
+            <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">{{ __ "filter_by_date" }}</h2>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                <div>
+                    <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __ "filter_date_from" }}</label>
+                    <input type="date" id="start_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="YYYY-MM-DD" />
+                </div>
+                <div>
+                    <label for="end_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __ "filter_date_to" }}</label>
+                    <input type="date" id="end_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="YYYY-MM-DD" />
                 </div>
             </div>
-        {{/if}}
-        <div class="header-right">
-            {{!-- {{#if user}}
-                <div class="theme-switch dropdown-box" id="theme-switch">
-                    <div id="active-theme-display">
-                        <div id="active-bg-display"></div>
-                    </div>
-                    <div class="dropdown" id="theme-dropdown">
-                        {{> themeSwitcher }}
-                    </div>
-                </div>
-            {{/if}} --}}
-            <div class="account dropdown-box" id="account">
-                {{#if user}}
-                    {{!-- <img src="https://lh3.googleusercontent.com/a/ACg8ocIZxlW35AFzChEGDdqLe1A4EFsh-Wn1R_8850K6ToGmqZeBcvhw=s192-c-rg-br100" alt="Avatar"> --}}
-                    <span>{{ user.email }}</span>
-                    <div class="dropdown" id="account-dropdown">
-                        <a href="#settings">{{ __ "settings" }}</a>
-                        <a href="/logout">{{ __ "logout" }}</a>
-                    </div>
-                {{else}}
-                    <style>body { --color: #13cbe7; --bg-color: #368598 }</style>
-                    <span><a href="/home">Начать</a></span>
-                {{/if}}
+            <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">{{ __ "search_results" }}</h2>
+            <div id="search-results" class="overflow-y-scroll">{{ __ "no_results" }}</div>
+        </form>
+    </div>
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p></p>
+            <div>
+                <button id="cancelBtn">{{ __ "cancel" }}</button>
+                <button id="confirmBtn" class="btn-danger">{{ __ "yes" }}</button>
             </div>
         </div>
     </div>
-</header>
-<div id="settings" class="modal"></div>
-<div id="overlay" class="overlay"></div>
+    <div id="overlay" class="overlay"></div>
+{{/if}}

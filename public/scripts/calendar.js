@@ -1,25 +1,35 @@
-function loadCalendar() {
+String.prototype.capitalize = function capitalize() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+function loadCalendar(monthsToDisplay = 6) {
     const calendarElement = document.getElementById("calendar");
-    const todayButton = document.getElementById("todayButton");
-    const yearDisplay = document.getElementById("yearDisplay");
-    const prevYearButton = document.getElementById("prevYear");
-    const nextYearButton = document.getElementById("nextYear");
+    const dateDisplay = document.getElementById("yearDisplay");
+    const prevButton = document.getElementById("prevYear");
+    const nextButton = document.getElementById("nextYear");
 
     const today = new Date();
+    const minDate = new Date(2020, 0, 1); // Минимальная дата
+    const maxFutureDate = new Date(today.getFullYear() + 5, today.getMonth(), today.getDate()); // Максимальная дата на 10 лет вперед
 
-    let displayedYear = today.getFullYear();
+    // Начальный месяц - от текущего назад на monthsToDisplay
+    let displayedStartDate = new Date(today.getFullYear(), today.getMonth() - (monthsToDisplay - 1), 1); 
 
-    function createCalendar(year) {
-        calendarElement.innerHTML = '';
-        yearDisplay.textContent = year;
+    function createCalendar(startDate, monthsCount) {
+        calendarElement.innerHTML = ''; // Очищаем календарь
+        const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + monthsCount - 1, 0); // Конец отображаемого периода
+        dateDisplay.textContent = `${startDate.toLocaleDateString(lang + '-GB', { year: 'numeric', month: 'short' }).capitalize()} - ${endDate.toLocaleDateString(lang + '-GB', { year: 'numeric', month: 'short' }).capitalize()}`;
 
-        for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+        let currentDate = new Date(startDate);
+
+        for (let monthIndex = 0; monthIndex < monthsCount; monthIndex++) {
             const monthElement = document.createElement("div");
             monthElement.className = "month";
-            monthElement.id = `month-${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+            monthElement.id = `month-${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
 
             const monthTitle = document.createElement("h2");
-            monthTitle.textContent = `${months[monthIndex]}`;
+            const monthTitleText = currentDate.toLocaleDateString(lang + '-GB', { month: 'long', year: 'numeric' });
+            monthTitle.textContent = monthTitleText.capitalize();
             monthElement.appendChild(monthTitle);
 
             const weekdaysElement = document.createElement("div");
@@ -33,10 +43,10 @@ function loadCalendar() {
 
             const daysElement = document.createElement("div");
             daysElement.className = "days";
-            const firstDayOfMonth = (new Date(year, monthIndex, 1).getDay() + 6) % 7; // Adjusting for week starting on Monday
-            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+            const firstDayOfMonth = (new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay() + 6) % 7; // Понедельник как первый день недели
+            const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
 
-            // Adding empty cells before the first day of the month
+            // Добавляем пустые ячейки перед началом месяца
             for (let i = 0; i < firstDayOfMonth; i++) {
                 const emptyCell = document.createElement("div");
                 daysElement.appendChild(emptyCell);
@@ -44,39 +54,39 @@ function loadCalendar() {
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement("div");
-                const date = new Date(year, monthIndex, day);
-                const yearStr = date.getFullYear();
-                const monthStr = String(date.getMonth() + 1).padStart(2, '0');
-                const dayOfMonthStr = String(date.getDate()).padStart(2, '0');
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
                 dayElement.textContent = day;
-                const dateString = `${yearStr}-${monthStr}-${dayOfMonthStr}`;
                 dayElement.setAttribute("data-date", dateString);
 
-                if (date < startDate) {
-                    dayElement.classList.add("future-day");
+                if (date < minDate) {
+                    dayElement.classList.add("disabled-day");
+                } else if (date > maxFutureDate) {
+                    dayElement.classList.add("disabled-day");
                 } else if (date.toDateString() === today.toDateString()) {
                     dayElement.classList.add("current-day");
-                    dayElement.addEventListener("click", () => {
-                        window.location.href = `/entries/${yearStr}/${monthStr}/${dayOfMonthStr}`;
-                    });
                 } else if (date > today) {
-                    dayElement.classList.add("future-day");
+                    // dayElement.classList.add("future-day");
                 } else {
-                    dayElement.classList.add("past-day");
-                    dayElement.addEventListener("click", () => {
-                        window.location.href = `/entries/${yearStr}/${monthStr}/${dayOfMonthStr}`;
-                    });
+                    // dayElement.classList.add("past-day");
                 }
-                // Если дата есть в existingDates, добавляем класс existing-day
+
                 if (existingDates.includes(dateString)) {
                     dayElement.classList.add("existing-day");
+                }
+
+                // Разрешаем клик только по доступным датам
+                if (date >= minDate && date <= maxFutureDate) {
+                    dayElement.addEventListener("click", () => {
+                        window.location.href = `/entries/${dateString.replaceAll('-', '/')}`;
+                    });
                 }
 
                 daysElement.appendChild(dayElement);
             }
 
-            // Adding empty cells after the last day of the month
+            // Добавляем пустые ячейки после последнего дня месяца
             const lastDayOfMonth = (firstDayOfMonth + daysInMonth) % 7;
             if (lastDayOfMonth !== 0) {
                 for (let i = lastDayOfMonth; i < 7; i++) {
@@ -87,36 +97,24 @@ function loadCalendar() {
 
             monthElement.appendChild(daysElement);
             calendarElement.appendChild(monthElement);
+
+            // Переходим к следующему месяцу
+            currentDate.setMonth(currentDate.getMonth() + 1);
         }
 
-    nextYearButton.disabled = displayedYear >= today.getFullYear();
-    prevYearButton.disabled = displayedYear <= startDate.getFullYear();
+        nextButton.disabled = startDate >= maxFutureDate;
+        prevButton.disabled = startDate <= minDate;
     }
 
-    prevYearButton.addEventListener("click", () => {
-        displayedYear--;
-        createCalendar(displayedYear);
+    prevButton.addEventListener("click", () => {
+        displayedStartDate.setMonth(displayedStartDate.getMonth() - monthsToDisplay);
+        createCalendar(displayedStartDate, monthsToDisplay);
     });
 
-    nextYearButton.addEventListener("click", () => {
-        displayedYear++;
-        createCalendar(displayedYear);
+    nextButton.addEventListener("click", () => {
+        displayedStartDate.setMonth(displayedStartDate.getMonth() + monthsToDisplay);
+        createCalendar(displayedStartDate, monthsToDisplay);
     });
 
-    todayButton.addEventListener("click", () => {
-        displayedYear = today.getFullYear();
-        createCalendar(displayedYear);
-
-        document.getElementById(`month-${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`).scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    });
-
-    createCalendar(displayedYear);
-
-    // document.getElementById(`month-${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`).scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "start"
-    // });
-};
+    createCalendar(displayedStartDate, monthsToDisplay);
+}

@@ -17,10 +17,11 @@ main::-webkit-scrollbar {
     width: 100%;
     flex-grow: 1;
 }
-h1 {
-    font-size: 32px;
+article h1 {
+    font-size: 32px !important;
     margin: 21px 0 12px;
     line-height: 34px;
+    margin-bottom: 15px;
 }
 .label::after {
     content: attr(data-label);
@@ -55,14 +56,6 @@ address {
 #editor {
     display: none;
 }
-.tag {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background-color: rgba(115, 116, 115, .4);
-    border-radius: 16px;
-    padding: 2px 7px;
-}
 #add-tag {
     display: none;
     cursor: pointer;
@@ -85,44 +78,19 @@ address {
 .close:hover {
     color: rgb(225, 101, 101);
 }
-button {
-    color: rgb(232, 230, 227);
-    border: 2px solid #7b7265;
-    background-color: rgb(24, 26, 27);
-    font-weight: 600;
-    font-style: normal;
-    font-size: 17px;
-    border-radius: 16px;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    margin: 0 0 15px;
-    cursor: pointer;
-    transition-duration: .2s;
-    display: block;
+.dark-theme .TMCommandButton_Inactive {
+    background-color: rgb(28, 30, 31);
 }
-button:hover {
-    background-color: #3a3a3a;
+.dark-theme .TMCommandButton {
+    fill: rgb(192, 186, 178);
+    color: rgb(192, 186, 178);
 }
-.btn-danger {
-    color: rgb(225, 101, 101);
-    border: 2px solid #853636;
+.dark-theme .TMCommandButton_Active {
+    background-color: rgb(42, 45, 47);
 }
-.btn-danger:hover {
-    background-color: #411c1c;
-}
-.btn-success {
-    color: rgb(101, 225, 124);
-    border: 2px solid #3b8536;
-}
-.btn-success:hover {
-    background-color: #1c411e;
-}
-#btn-edit[data-isEntryExists="false"] {
-    color: #13cbe7;
-    border: 2px solid #0c879a;
-}
-#btn-edit[data-isEntryExists="false"]:hover {
-    background-color: #06434d;
+.dark-theme .TMCommandButton_Inactive:hover {
+    fill: rgb(232, 230, 227);
+    background-color: rgb(33, 35, 37);
 }
 aside {
     position: fixed;

@@ -6,8 +6,10 @@ const authenticateJWT = require('./middleware/authenticateJWT');
 const router = express.Router();
 
 router.get('/', defaultController.startPage);
+router.get('/terms', defaultController.termsPage);
 router.get('/settings', authenticateJWT, defaultController.settingsPage);
 router.get('/api/settings', authenticateJWT, defaultController.getSettings);
+router.get('/api/hashtags', authenticateJWT, defaultController.getHashtags);
 router.post('/settings', authenticateJWT, defaultController.updateSettings);
 
 router.get('/home', authenticateJWT, entryController.homePage);
@@ -24,5 +26,6 @@ router.post('/login', authController.login);
 router.get('/register', authController.registerPage);
 router.post('/register', authController.register);
 router.get('/logout', authController.logout);
+// router.get('/forgot-password', authController.forgotPasswordPage);
 
 module.exports = router;

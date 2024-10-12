@@ -1,35 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __ "calendar" }}</title>
-    <script src="/scripts/calendar.js" defer></script>
-    <script src="/scripts/general.js" defer></script>
-    <link rel="stylesheet" href="/styles/general.css">
-    <link rel="stylesheet" href="/styles/calendar.css">
-    {{#if user.beta}}<link rel="stylesheet" href="/styles/beta.css">{{/if}}
-</head>
-<body>
-    {{> header}}
-    <main>
-        <div class="year-navigation">
-            <div class="line"></div>
-            <h1 id="yearDisplay">2024</h1>
-            <div class="line"></div>
-            <div>
-                <button id="prevYear">&lt;</button>
-                <button id="nextYear">&gt;</button>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+        <link
+        rel="stylesheet"
+        as="style"
+        onload="this.rel='stylesheet'"
+        href="https://fonts.googleapis.com/css2?display=swap&amp;family=Epilogue%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+        />
+
+        <title>{{ __ "calendar" }}</title>
+        <link rel="icon" type="image/x-icon" href="/static/logo.png" />
+
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <script src="/scripts/calendar.js" defer></script>
+        <script src="/scripts/general.js" defer></script>
+        <link rel="stylesheet" href="/styles/calendar.css">
+        <link rel="stylesheet" href="/styles/partials.css">
+        <link rel="stylesheet" href="/styles/general.css">
+    </head>
+    <body>
+        <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Epilogue, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+            {{> header}}
+            <main>
+            <div class="px-40 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="flex flex-wrap items-center justify-center gap-6 p-4">
+                    <div class="year-navigation">
+                        <div class="line"></div>
+                        <h3 class="text-[#0e141b] tracking-light text-2xl font-bold leading-tight px-4 text-left pb-2 pt-5" id="yearDisplay"></h3>
+                        <div class="line"></div>
+                        <div>
+                            <button id="prevYear">
+                                <div class="text-[#0e141b] flex size-10 items-center justify-center bg-[#e7edf3] rounded-xl" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256" style="--darkreader-inline-fill: currentColor;" data-darkreader-inline-fill="">
+                                    <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                                </svg>
+                                </div>
+                            </button>
+                            <button id="nextYear">
+                                <div class="text-[#0e141b] flex size-10 items-center justify-center bg-[#e7edf3] rounded-xl" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256" style="--darkreader-inline-fill: currentColor;" data-darkreader-inline-fill="">
+                                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                                </svg>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="calendar" class="noselect"></div>
+                </div>
+                <h2 class="text-[#0e141b] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">{{ __ "recent_entries" }}</h2>
+                <div>
+                    {{#if recentEntries}}{{#each recentEntries}}
+                        <div class="flex items-center gap-4 bg-slate-50 px-4 min-h-[72px] py-2 justify-between">
+                            <div class="flex items-center gap-4">
+                                <div id="re-{{@index}}" class="text-[#0e141b] flex items-center justify-center rounded-lg bg-[#e7edf3] shrink-0 size-12" data-icon="Book" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                                        <path
+                                        d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"
+                                        ></path>
+                                    </svg>
+                                    <script>el = document.getElementById('re-{{@index}}'); img = (`{{this.content}}`.replaceAll('&#x3D;', '=').replaceAll('&amp;', '&').match(/\!\[.*?\]\((https?:\/\/[^\s]+)\)/) || [])[1] || null; if (img) { el.style.background = `url(${img})`; el.style.backgroundSize = 'cover' }</script>
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <div class="flex gap-2">
+                                        <p class="text-[#0e141b] text-base font-medium leading-normal line-clamp-1">{{formatTimestamp this.date ../user.lang}},</p>
+                                        <p class="text-[#4e7397] text-sm font-normal leading-normal line-clamp-2">{{formatRelativeTimestamp this.editDate ../user.lang}}</p>
+                                    </div>
+                                    <p class="text-[#0e141b] text-sm font-normal leading-normal line-clamp-2">{{shortenText this.content 100 true}}</p>
+                                </div>
+                            </div>
+                            <div class="shrink-0">
+                                <div class="recent-entry-btn dropdown-box text-[#0e141b] flex size-7 items-center justify-center cursor-pointer" data-icon="DotsThree" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                                        <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Z"></path>
+                                    </svg>
+                                    <div class="dropdown recent-entry-dropdown">
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                            <li>
+                                                <a href="#" class="block px-4 py-2" onclick="window.location.href = '/entries/{{this.date}}'.replaceAll('-', '/')">{{ ../__ "go" }}</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="block px-4 py-2 text-[#F05252]" onclick="showConfirmationModal('{{ ../__ "delete" }}', '{{ ../__ "confirm_delete_entry" }}', deleteEntry, [{{this.id}}])">{{ ../__ "delete" }}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                    {{else}}<p class="text-[#4e7397] text-slate-500 mt-2 text-sm text-center">{{ __ "no_recent_entries" }}</p>{{/if}}
+                </div>
             </div>
+            </div>
+            </main>
+            {{> footer}}
         </div>
-        <div id="calendar"></div>
-        <button id="todayButton">{{ __ "today" }}</button>
-    </main>
-    {{> footer}}
-    <script>
-        const months = {{{json (__ "months")}}};
-        const weekdays = {{{json (__ "weekdays")}}};
-        const existingDates = {{{json existingDates}}};
-    </script>
-</body>
+        </div>
+        <script>
+            const lang = '{{user.lang}}';
+            const cal_months = {{user.cal_months}};
+            const months = {{{json (__ "months")}}};
+            const weekdays = {{{json (__ "weekdays")}}};
+            const existingDates = {{{json existingDates}}};
+        </script>
+    </body>
 </html>
+

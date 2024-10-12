@@ -5,12 +5,24 @@ exports.startPage = (req, res) => {
     res.render('startPage');
 };
 
+exports.termsPage = (req, res) => {
+    res.render('termsOfUse');
+};
+
 exports.settingsPage = (req, res) => {
-    res.render('settings', { user: req.user });
+    res.render('settings', { user: req.user, colors: [
+        { color: '#52c8e5', bgColor: '#368598' },
+        { color: '#8a5bdc', bgColor: '#5a3b8f' },
+        { color: '#ff6ac6', bgColor: '#b24a8a' },
+        { color: '#e55268', bgColor: '#983645' },
+        { color: '#e57c52', bgColor: '#985236' },
+        { color: '#efd648', bgColor: '#a29130' },
+        { color: '#7cdb5c', bgColor: '#508e3b' }
+    ] });
 }
 
 exports.getSettings = (req, res) => {
-    db.get('SELECT theme, color, bg_color, beta, start_date FROM users WHERE id = ?', [req.user.id], (err, row) => {
+    db.get('SELECT theme, color, bg_color, beta, cal_months FROM users WHERE id = ?', [req.user.id], (err, row) => {
         if (err) {
             return res.status(500).json({ message: 'Ошибка при получении настроек' });
         }
@@ -19,8 +31,40 @@ exports.getSettings = (req, res) => {
     });
 };
 
+exports.getHashtags = (req, res) => {
+    db.all('SELECT tags FROM entries WHERE user_id = ?', [req.user.id], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ message: 'Ошибка при получении хэштегов' });
+        }
+
+        const hashtags = [];
+        rows.forEach(row => {
+            if (row.tags) {
+                row.tags.split(',').forEach(tag => {
+                    if (tag) {
+                        hashtags.push(tag);
+                    }
+                });
+            }
+        });
+
+        const hashtagCounts = {};
+        hashtags.forEach(hashtag => {
+            if (hashtagCounts[hashtag]) {
+                hashtagCounts[hashtag]++;
+            } else {
+                hashtagCounts[hashtag] = 1;
+            }
+        });
+
+        const sortedHashtags = Object.keys(hashtagCounts).sort((a, b) => hashtagCounts[b] - hashtagCounts[a]);
+
+        res.json(sortedHashtags);
+    });
+};
+
 exports.updateSettings = (req, res) => {
-    const { theme, color, bg_color, lang, beta, start_date } = req.body;
+    const { theme, color, bg_color, lang, beta, cal_months, rec_ent } = req.body;
     const userId = req.user.id;
 
     // Массив для хранения частей SQL-запроса
@@ -48,9 +92,13 @@ exports.updateSettings = (req, res) => {
         fields.push('beta = ?');
         params.push(beta);
     }
-    if (start_date) {
-        fields.push('start_date = ?');
-        params.push(start_date);
+    if (cal_months) {
+        fields.push('cal_months = ?');
+        params.push(cal_months);
+    }
+    if (rec_ent !== undefined && 0 <= Number(rec_ent) <= 10) {
+        fields.push('rec_ent = ?');
+        params.push(rec_ent);
     }
 
     // Если нет полей для обновления, возвращаем ошибку

@@ -1,37 +1,31 @@
 const editButton = document.getElementById('btn-edit');
+const cancelButton = document.getElementById('btn-cancel');
 const saveButton = document.getElementById('btn-save');
+const startButton = document.getElementById('btn-start');
 const deleteButton = document.getElementById('btn-delete');
 const content = document.getElementById('content');
 const tagInput = document.getElementById('tag-input');
-const tagContainer = document.querySelector('.tags-container');
-const editorSpace = document.getElementById('editor-space');
+const tagContainer = document.querySelector('article .tags-container');
 const editor = document.getElementById('editor');
 
-const dropdown = document.createElement('div');
-dropdown.classList.add('dropdown');
-document.body.appendChild(dropdown);
+// Функция для перехода в режим редактирования
+function enterEditMode() {
+    editButton ? editButton.classList.add('hidden') : startButton.classList.add('hidden');
+    cancelButton.classList.remove('hidden');
+    saveButton.classList.remove('hidden');
+    
+    content.style.display = 'none';
+    editor.style.display = 'block';
+    reformatTagsView(true);
+}
 
-editButton.addEventListener('click', function() {
-    const currentState = editButton.getAttribute('data-state');
+// Функция для выхода из режима редактирования (отмена)
+function exitEditMode() {
+    location.reload(); // Перезагружаем страницу, чтобы отменить изменения
+}
 
-    switch (currentState) {
-        case 'edit':
-
-            saveButton.style.display = 'block';
-            editButton.textContent = editButton.getAttribute('data-cancelText');
-            editButton.setAttribute('data-state', 'cancel');
-
-            content.style.display = 'none';
-            editor.style.display = 'block';
-            reformatTagsView(true);
-            break;
-        case 'cancel':
-            location.reload();
-            break;
-    }
-});
-
-saveButton.addEventListener('click', function() {
+// Функция для сохранения записи
+function saveEntry() {
     const entryId = saveButton.getAttribute('data-entryId');
     const tags = getInlineTags();
 
@@ -59,12 +53,23 @@ saveButton.addEventListener('click', function() {
     .catch((error) => {
         console.error('Error:', error);
     });
+}
 
-    saveButton.style.display = 'none';
-    editButton.textContent = 'Edit';
-    editButton.setAttribute('data-state', 'edit');
-});
+// Обработчики событий
+if (editButton) {
+    editButton.addEventListener('click', enterEditMode);
+}
+if (cancelButton) {
+    cancelButton.addEventListener('click', exitEditMode);
+}
+if (saveButton) {
+    saveButton.addEventListener('click', saveEntry);
+}
+if (startButton) {
+    startButton.addEventListener('click', enterEditMode); // Старт записи с нуля
+}
 
+// Вспомогательные функции для работы с тегами
 function reformatTagsView(key) {
     const tags = getTags();
     tagInput.value = tags;
@@ -79,12 +84,19 @@ function getTags() {
     });
     return tags.join(',');
 }
+
 function getInlineTags() {
-    return [...new Set(tagInput.value.split(',').map(tag => tag.trim().replaceAll(' ', '_')))].join(',');
+    return [...new Set(
+        tagInput.value
+            .split(',')
+            .map(tag => tag.trim().replaceAll(' ', '_').replace(/^#/, '').toLowerCase())
+    )]
+    .sort()
+    .join(',');
 }
 
 function deleteEntry(id) {
-    fetch(`/entries/${deleteButton.getAttribute('data-entryId')}`, { method: 'DELETE' })
+    fetch(`/entries/${id}`, { method: 'DELETE' })
     .then(response => {
         if (response.ok) {
             location.reload();

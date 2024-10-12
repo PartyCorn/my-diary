@@ -4,47 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __ "settings" }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 </head>
 <body>
-    <h1>{{ __ "settings" }}</h1>
+    <div class="flex flex-wrap justify-between gap-3 p-4">
+        <h2 class="text-[#0e141b] tracking-light text-[24px] font-bold leading-tight">{{ __ "settings" }}</h2>
+    </div>
     {{> themeSwitcher}}
-    <hr>
-    <h2>{{ __ "lang" }}</h2>
-    <div class="language-buttons">
-        <button class="lang-btn" data-lang="en">
-            <span class="flag flag-en"></span> English
-        </button>
-        <button class="lang-btn" data-lang="ru">
-            <span class="flag flag-ru"></span> Русский
-        </button>
-        <button class="lang-btn" data-lang="fr">
-            <span class="flag flag-fr"></span> Français
-        </button>
-        <button class="lang-btn" data-lang="de">
-            <span class="flag flag-de"></span> Deutsch
-        </button>
-        <button class="lang-btn" data-lang="it">
-            <span class="flag flag-it"></span> Italiano
-        </button>
-        <button class="lang-btn" data-lang="es">
-            <span class="flag flag-es"></span> Español
-        </button>
-        <button class="lang-btn" data-lang="pl">
-            <span class="flag flag-pl"></span> Polski
-        </button>
-        <button class="lang-btn" data-lang="jpn">
-            <span class="flag flag-jp"></span> 日本語
-        </button>
+    <h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">{{ __ "lang" }}</h3>
+    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+        <label class="flex flex-col min-w-40 flex-1">
+        <select id="lang-select" class="form-input cursor-pointer flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0e141b] focus:outline-0 focus:ring-0 border border-[#d0dbe7] bg-slate-50 focus:border-[#d0dbe7] h-14 bg-[image:--select-button-svg] placeholder:text-[#4e7397] p-[15px] text-base font-normal leading-normal">
+            <option value="en" {{#ifeq user.lang "en"}}selected{{/ifeq}}>English</option>
+            <option value="ru" {{#ifeq user.lang "ru"}}selected{{/ifeq}}>Русский</option>
+            <option value="fr" {{#ifeq user.lang "fr"}}selected{{/ifeq}}>Français</option>
+            <option value="de" {{#ifeq user.lang "de"}}selected{{/ifeq}}>Deutsch</option>
+            <option value="it" {{#ifeq user.lang "it"}}selected{{/ifeq}}>Italiano</option>
+            <option value="es" {{#ifeq user.lang "es"}}selected{{/ifeq}}>Español</option>
+            <option value="pl" {{#ifeq user.lang "pl"}}selected{{/ifeq}}>Polski</option>
+            <option value="ja" {{#ifeq user.lang "ja"}}selected{{/ifeq}}>日本語</option>
+        </select>
+        </label>
     </div>
-    <hr>
-    <h2>{{ __ "start_date" }}</h2>
-    <input type="date" name="start-date" id="start-date" value="{{user.start_date}}">
-    <hr>
-    <label for="beta-btn">{{ __ "enable_beta" }}</label>
-    <div class="switch">
-        <input type="checkbox" name="beta" id="beta-btn" {{#if user.beta}}checked{{/if}}>
-        <span class="slider"></span>
+    <h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">{{ __ "calendar" }}</h3>
+    <div class="@container">
+        <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 @[480px]:flex-row @[480px]:items-center">
+        <div class="flex w-full shrink-[1.5] items-center justify-between">
+            <p class="text-[#0e141b] text-base font-medium leading-normal">{{ __ "settings_display_month" }}</p>
+        </div>
+        <div class="flex h-4 w-full items-center gap-4">
+            <div class="relative mb-6 w-full">
+                <input id="cal-months" type="range" value="{{user.cal_months}}" min="3" max="12" step="3" class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer range-sm">
+                <span class="text-sm text-gray-500 absolute start-0 -bottom-6">3</span>
+                <span class="text-sm text-gray-500 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">6</span>
+                <span class="text-sm text-gray-500 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">9</span>
+                <span class="text-sm text-gray-500 absolute end-0 -bottom-6">12</span>
+            </div>
+        </div>
+        </div>
     </div>
+    <div class="@container">
+        <div class="relative flex w-full flex-col items-start justify-between gap-3 p-4 @[480px]:flex-row @[480px]:items-center">
+        <div class="flex w-full shrink-[1.5] items-center justify-between">
+            <p class="text-[#0e141b] text-base font-medium leading-normal">{{ __ "show_rec_ent" }}</p>
+        </div>
+        <div class="flex h-4 w-full items-center gap-4">
+            <input id="rec-ent" type="range" min="0" max="10" step="1" value="{{user.rec_ent}}" class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+            <p id="rec-ent-value" class="text-[#0e141b] text-sm font-normal leading-normal hidden @[480px]:block">{{user.rec_ent}}</p>
+        </div>
+    </div>
+    <h3 class="text-[#0e141b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">{{ __ "experiments" }}</h3>
+    <div class="flex items-center gap-4 px-4 min-h-[72px] py-2 justify-between">
+        <div class="flex flex-col justify-center">
+            <p class="text-[#0e141b] text-base font-medium leading-normal line-clamp-1">{{ __ "enable_experiments" }}</p>
+            <p class="text-[#4e7397] text-sm font-normal leading-normal line-clamp-2">{{ __ "experiments_desc" }}.</p>
+        </div>
+        <div class="shrink-0">
+            <div class="switch">
+                <input type="checkbox" name="beta" id="beta-btn" {{#if user.beta}}checked{{/if}}>
+                <span class="slider"></span>
+            </div>
+        </div>
+    </div>
+    {{!-- <div class="flex px-4 py-3 justify-end">
+        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e7edf3] text-[#0e141b] text-sm font-bold leading-normal tracking-[0.015em]">
+            <span class="truncate">Save</span>
+        </button>
+    </div> --}}
 </body>
-
 </html>

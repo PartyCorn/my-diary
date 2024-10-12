@@ -8,6 +8,10 @@ main {
     margin-top: 20px;
 }
 
+.noselect {
+    user-select: none;
+}
+
 .year-navigation {
     display: flex;
     align-items: center;
@@ -41,28 +45,21 @@ main {
     cursor: pointer;
 }
 
-#todayButton {
+/* #todayButton {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     display: none;
-}
+} */
 
 #calendar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, auto);
     gap: 20px;
     width: 100%;
     max-width: 1200px;
-}
-
-.month {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
 }
 
 .month h2 {
@@ -78,42 +75,57 @@ main {
 
 .weekdays div, .days div {
     width: 13.7%;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2px 0;
-    border: 1px solid #ddd;
 }
 
 .weekdays div {
     font-weight: bold;
     background-color: #f0f0f0;
 }
+.weekdays div:nth-child(1) {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+.weekdays div:nth-child(7) {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
 
-.days div.past-day {
-    background-color: #fff;
+.days div {
     cursor: pointer;
 }
 
 .days div.future-day {
-    background-color: #ccc;
+    color: #9b9b9b;
     pointer-events: none;
 }
 
 .days div.current-day {
-    background-color: #fff;
     outline: 2px solid #000;
-    cursor: pointer;
+    border-radius: 50px;
 }
 .days div.existing-day {
     background-color: var(--color);
+    border-radius: 50px;
+    color: #fff;
+}
+.days div.disabled-day {
+    color: #9b9b9b;
+    pointer-events: none;
+}
+.dark-theme .days div {
+    color: #F3F4F6;
 }
 
 @media (max-width: 1100px) {
     .year-navigation {
         display: flex;
     }
-    #todayButton {
+    /* #todayButton {
         padding: 5px 10px;
         font-size: 16px;
         cursor: pointer;
@@ -122,7 +134,7 @@ main {
         bottom: 20px;
         left: 10px;
         display: block;
-    }
+    } */
 
     main {
         width: 100%;
