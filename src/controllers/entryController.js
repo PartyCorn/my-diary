@@ -165,7 +165,7 @@ exports.searchEntries = (req, res) => {
         params.push(end_date.trim());
     }
 
-    sql += ' LIMIT 10';
+    sql += ' ORDER BY editDate DESC, date DESC LIMIT 10';
 
     db.all(sql, params, (err, rows) => {
         if (err) {
